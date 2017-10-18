@@ -16,7 +16,7 @@ public static class AnimatorExtensions {
     }
 
     public static void setNormalizedTime(this Animator animator, float normalizedTime) {
-        if (animator.gameObject.activeSelf) {
+        if (animator.isActiveAndEnabled) {
             animator.Play(animator.GetCurrentAnimatorStateInfo(0).fullPathHash, 0, normalizedTime);
         }
     }

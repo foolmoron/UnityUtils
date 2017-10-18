@@ -19,6 +19,32 @@ public static class ArrayExtensions {
         return count;
     }
 
+    public static bool All<T>(this IList<T> array, Func<T, bool> condition) {
+        for (int i = 0; i < array.Count; i++) {
+            if (!condition(array[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static bool Any<T>(this IList<T> array, Func<T, bool> condition) {
+        for (int i = 0; i < array.Count; i++) {
+            if (condition(array[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static int Sum<T>(this IList<T> array, Func<T, int> sumFunction) {
+        var sum = 0;
+        for (int i = 0; i < array.Count; i++) {
+            sum += sumFunction(array[i]);
+        }
+        return sum;
+    }
+
     public static void ForEach<T>(this IList<T> array, Action<T> action) {
         for (int i = 0; i < array.Count; i++) {
             action(array[i]);
