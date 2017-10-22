@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Diagnostics;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 public class ProgressiveFunc : IEnumerator {
 
@@ -19,7 +18,7 @@ public class ProgressiveFunc : IEnumerator {
         progressiveRoutine = WorkProgressively();
     }
     
-    public IEnumerator WorkProgressively() {
+    IEnumerator WorkProgressively() {
         // start timer
         sw.Start();
         // step through work
@@ -29,8 +28,9 @@ public class ProgressiveFunc : IEnumerator {
             if (sw.ElapsedTicks >= tickBudget || workRoutine.Current is WaitForEndOfFrame) {
                 yield return endOfFrame;
                 sw.Restart();
-            } else if (workRoutine.Current is YieldInstruction) {
-                // handle other non-null yields
+            } 
+            // handle other non-null yields
+            else if (workRoutine.Current is YieldInstruction) {
                 yield return workRoutine.Current;
             }
         }
@@ -38,5 +38,5 @@ public class ProgressiveFunc : IEnumerator {
 
     public bool MoveNext() { return progressiveRoutine.MoveNext(); }
     public void Reset() { progressiveRoutine.Reset(); }
-    public object Current { get { return progressiveRoutine.Current;  } }
+    public object Current { get { return progressiveRoutine.Current; } }
 }
