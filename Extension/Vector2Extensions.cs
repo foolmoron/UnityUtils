@@ -35,12 +35,21 @@ public static class Vector2Extensions {
         return new Vector2(vector.x, vector.y * timesY);
     }
 
+    public static Vector2 scaledWith(this Vector2 vector, Vector2 other) {
+        vector.Scale(other);
+        return vector;
+    }
+
     public static Vector2 orthogonal(this Vector2 vector) {
         return new Vector2(-vector.y, vector.x);
     }
 
     public static float angle(this Vector2 vector) {
         return Mathf.Atan2(vector.y, vector.x);
+    }
+
+    public static float aspect(this Vector2 vector) {
+        return vector.x / vector.y;
     }
 
 	public static Vector2 Rotate(this Vector2 vector, float degrees) {

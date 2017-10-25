@@ -42,4 +42,9 @@ public static class Vector3Extensions {
     public static Vector3 timesZ(this Vector3 vector, float timesZ) {
         return new Vector3(vector.x, vector.y, vector.z * timesZ);
     }
+
+    public static Vector3 scaledWith(this Vector3 vector, Vector3 other) {
+        vector.Scale(other);
+        return vector;
+    }
 }
