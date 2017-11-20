@@ -74,6 +74,14 @@ public static class ArrayExtensions {
         return -1;
     }
 
+    public static int IndexOf<TArray, TItem>(this IList<TArray> array, TItem item, Func<TArray, TItem, bool> comparator) {
+        for (int i = 0; i < array.Count; i++) {
+            if (comparator(array[i], item))
+                return i;
+        }
+        return -1;
+    }
+
     public static T Find<T>(this IList<T> array, Func<T, bool> searchPredicate) {
         for (int i = 0; i < array.Count; i++) {
             if (searchPredicate(array[i]))

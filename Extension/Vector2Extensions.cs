@@ -48,6 +48,12 @@ public static class Vector2Extensions {
         return Mathf.Atan2(vector.y, vector.x);
     }
 
+    public static float angleDeg(this Vector2 vector) {
+        var deg = Mathf.Atan2(vector.y, vector.x) * Mathf.Rad2Deg;
+        deg = (deg + 360f) % 360f;
+        return deg;
+    }
+
     public static float aspect(this Vector2 vector) {
         return vector.x / vector.y;
     }
