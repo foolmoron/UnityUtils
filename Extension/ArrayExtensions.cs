@@ -6,6 +6,20 @@ using System.Collections.Generic;
 
 public static class ArrayExtensions {
 
+    public static T First<T>(this IList<T> array) {
+        return array[0];
+    }
+    public static T FirstOrDefault<T>(this IList<T> array, T defaultValue = default(T)) {
+        return array.Count > 0 ? array[0] : defaultValue;
+    }
+
+    public static T Last<T>(this IList<T> array) {
+        return array[array.Count - 1];
+    }
+    public static T LastOrDefault<T>(this IList<T> array, T defaultValue = default(T)) {
+        return array.Count > 0 ? array[array.Count - 1] : defaultValue;
+    }
+
     public static T Random<T>(this IList<T> array) {
         return array[Mathf.FloorToInt(UnityEngine.Random.value * array.Count)];
     }
