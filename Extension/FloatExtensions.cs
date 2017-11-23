@@ -12,6 +12,11 @@ public static class FloatExtensions {
         return new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
     }
 
+    public static float to01(this float val) {
+        // [-1, 1] to [0, 1], useful for trig functions, input axes, etc
+        return (Mathf.Clamp(val, -1, 1) + 1) / 2;
+    }
+
     public static Direction toAnimationDirection(this float angle) {
         var angleOfInputRotated = (angle - 45 + 360) % 360; // rotate so 0 is top-right corner
         if (angleOfInputRotated >= 0 && angleOfInputRotated <= 90) { // down/up use inclusive comparators to prefer them for diagonal movement
