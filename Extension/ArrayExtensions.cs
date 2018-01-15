@@ -149,6 +149,12 @@ public static class ArrayExtensions {
         return array;
     }
 
+    public static void AddOnce<T>(this List<T> list, T item) {
+        if (!list.Contains(item)) {
+            list.Add(item);
+        }
+    }
+
     public static int RemoveAll<T>(this List<T> list, T item) {
         var count = 0;
         while (list.Contains(item)) {

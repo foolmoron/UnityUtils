@@ -23,6 +23,11 @@ public class ListDict<TKey, TValue> {
         Values[index] = value;
     }
 
+    public TValue GetOrDefault(TKey key) {
+        var index = Keys.IndexOf(key);
+        return index >= 0 && index < Count ? Values[index] : default(TValue);
+    }
+
     public bool Remove(TKey key) {
         return RemoveAt(Keys.IndexOf(key));
     }
