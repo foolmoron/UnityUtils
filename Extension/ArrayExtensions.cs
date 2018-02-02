@@ -24,6 +24,12 @@ public static class ArrayExtensions {
         return array[Mathf.FloorToInt(UnityEngine.Random.value * array.Count)];
     }
 
+    public static T Next<T>(this IList<T> array, T current) {
+        var currentIndex = array.IndexOf(current);
+        var nextIndex = (currentIndex + 1) % array.Count;
+        return array[nextIndex];
+    }
+
     public static int Count<T>(this IList<T> array, Func<T, bool> countPredicate) {
         var count = 0;
         for (int i = 0; i < array.Count; i++) {

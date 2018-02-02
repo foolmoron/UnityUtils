@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class AnimationUtilities : MonoBehaviour {
 
@@ -35,6 +36,14 @@ public class AnimationUtilities : MonoBehaviour {
                 }
             }
         }
+    }
+
+    public void LoadScene(string scene) {
+        SceneManager.LoadScene(scene);
+    }
+
+    public void LoadSceneById(int scene) {
+        SceneManager.LoadScene(scene);
     }
 
     public void DelayByIndexOncePerPlay(int delayIndex) {
