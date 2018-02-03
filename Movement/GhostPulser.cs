@@ -24,6 +24,7 @@ public class GhostPulser : MonoBehaviour {
     public bool ForcePulse;
 
     SpriteRenderer spriteRenderer;
+    float prevRealtime;
 
     // parallel lists
     List<GameObject> ghostObjects = new List<GameObject>(10);
@@ -36,6 +37,7 @@ public class GhostPulser : MonoBehaviour {
     void FixedUpdate() {
         // handle pulsing
         {
+            var realtime = Time.realtimeSinceStartup;
             if (ForcePulse) {
                 Pulse();
             }
@@ -47,13 +49,14 @@ public class GhostPulser : MonoBehaviour {
                     Pulse();
                 }
             } else if (AutoPulse && GloballySynchronizePulses) {
-                var timeToSynchronizedPulseBeforeThisFrame = PulseInterval - ((Time.realtimeSinceStartup - Time.deltaTime) % PulseInterval);
-                var timeToSynchronizedPulseNow = PulseInterval - (Time.realtimeSinceStartup % PulseInterval);
-                // if there's more time to the next synchronized pulse now than last frame, that means we have rolled over the synchronized pulse interval in this frame, so pulse!
-                if (timeToSynchronizedPulseNow > timeToSynchronizedPulseBeforeThisFrame) {
+                var pulseRemainderBeforeThisFrame = prevRealtime % PulseInterval;
+                var pulseRemainderNow = realtime % PulseInterval;
+                // if there's was more time remaining in the interval in the last frame than now, that means we have rolled over the synchronized pulse interval in this frame, so pulse!
+                if (pulseRemainderBeforeThisFrame > pulseRemainderNow) {
                     Pulse();
                 }
             }
+            prevRealtime = realtime;
         }
         // destroy ghosts after they run out of duration
         {

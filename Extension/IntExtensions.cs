@@ -54,4 +54,8 @@ public static class IntExtensions {
         }
         return falseBits;
     }
+
+    public static int sign(this int value) {
+        return value > 0 ? 1 : value < 0 ? -1 : 0;
+    }
 }
