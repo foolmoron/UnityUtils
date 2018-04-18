@@ -64,17 +64,25 @@ public class ListDict2<TKey, TValue1, TValue2> {
     
     public TValue1 this[TKey key] {
         get { return Values1[Keys.IndexOf(key)]; }
-        set { Add(key, value, default(TValue2)); }
+        set { Add(key, value); }
     }
 
     public TValue1 GetValue1(TKey key) {
         return Values1[Keys.IndexOf(key)];
+    }
+    public TValue1 GetValue1OrDefault(TKey key) {
+        var index = Keys.IndexOf(key);
+        return index >= 0 && index < Count ? Values1[index] : default(TValue1);
     }
     public void SetValue1(TKey key, TValue1 value1) {
         Values1[Keys.IndexOf(key)] = value1;
     }
     public TValue2 GetValue2(TKey key) {
         return Values2[Keys.IndexOf(key)];
+    }
+    public TValue2 GetValue2OrDefault(TKey key) {
+        var index = Keys.IndexOf(key);
+        return index >= 0 && index < Count ? Values2[index] : default(TValue2);
     }
     public void SetValue2(TKey key, TValue2 value2) {
         Values2[Keys.IndexOf(key)] = value2;
@@ -152,11 +160,15 @@ public class ListDict3<TKey, TValue1, TValue2, TValue3> {
     
     public TValue1 this[TKey key] {
         get { return Values1[Keys.IndexOf(key)]; }
-        set { Add(key, value, default(TValue2), default(TValue3)); }
+        set { Add(key, value); }
     }
 
     public TValue1 GetValue1(TKey key) {
         return Values1[Keys.IndexOf(key)];
+    }
+    public TValue1 GetValue1OrDefault(TKey key) {
+        var index = Keys.IndexOf(key);
+        return index >= 0 && index < Count ? Values1[index] : default(TValue1);
     }
     public void SetValue1(TKey key, TValue1 value1) {
         Values1[Keys.IndexOf(key)] = value1;
@@ -164,11 +176,19 @@ public class ListDict3<TKey, TValue1, TValue2, TValue3> {
     public TValue2 GetValue2(TKey key) {
         return Values2[Keys.IndexOf(key)];
     }
+    public TValue2 GetValue2OrDefault(TKey key) {
+        var index = Keys.IndexOf(key);
+        return index >= 0 && index < Count ? Values2[index] : default(TValue2);
+    }
     public void SetValue2(TKey key, TValue2 value2) {
         Values2[Keys.IndexOf(key)] = value2;
     }
     public TValue3 GetValue3(TKey key) {
         return Values3[Keys.IndexOf(key)];
+    }
+    public TValue3 GetValue3OrDefault(TKey key) {
+        var index = Keys.IndexOf(key);
+        return index >= 0 && index < Count ? Values3[index] : default(TValue3);
     }
     public void SetValue3(TKey key, TValue3 value3) {
         Values3[Keys.IndexOf(key)] = value3;

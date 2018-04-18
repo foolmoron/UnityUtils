@@ -2,7 +2,6 @@
 using System.Collections;
 
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public abstract class Manager<T> : MonoBehaviour where T : Manager<T> {
     static T inst;

@@ -104,6 +104,9 @@ public class ObjectPool : MonoBehaviour {
         if (Objects == null) {
             Init();
         }
+        if (Objects.Contains(obj)) {
+            return;
+        }
         var pooledObj = obj.GetComponent<PooledObject>() ?? obj.AddComponent<PooledObject>();
         pooledObj.Source = this;
         Objects.Push(obj);

@@ -24,6 +24,41 @@ public static class ArrayExtensions {
         return array[Mathf.FloorToInt(UnityEngine.Random.value * array.Count)];
     }
 
+    public static T RandomExceptRange<T>(this IList<T> array, int indexStart, int indexRange = 1) {
+        var indexExceptRange = (indexStart + indexRange + Mathf.FloorToInt(UnityEngine.Random.value * (array.Count - indexRange))) % array.Count;
+        return array[indexExceptRange];
+    }
+    
+    public static TArray RandomWhere<TArray, TItem>(this IList<TArray> array, TItem item, Func<TArray, TItem, bool> filterPredicate) {
+        var items = Count(array, item, filterPredicate);
+        var matchingItemToPick = Mathf.FloorToInt(UnityEngine.Random.value * items);
+        var matchingItems = 0;
+        for (int i = 0; i < array.Count; i++) {
+            if (filterPredicate(array[i], item)) {
+                if (matchingItems == matchingItemToPick) {
+                    return array[i];
+                }
+                matchingItems++;
+            }
+        }
+        return default(TArray);
+    }
+
+    public static T RandomWhere<T>(this IList<T> array, Func<T, bool> filterPredicate) {
+        var items = Count(array, filterPredicate);
+        var matchingItemToPick = Mathf.FloorToInt(UnityEngine.Random.value * items);
+        var matchingItems = 0;
+        for (int i = 0; i < array.Count; i++) {
+            if (filterPredicate(array[i])) {
+                if (matchingItems == matchingItemToPick) {
+                    return array[i];
+                }
+                matchingItems++;
+            }
+        }
+        return default(T);
+    }
+
     public static T Next<T>(this IList<T> array, T current) {
         var currentIndex = array.IndexOf(current);
         var nextIndex = (currentIndex + 1) % array.Count;
@@ -32,16 +67,34 @@ public static class ArrayExtensions {
 
     public static int Count<T>(this IList<T> array, Func<T, bool> countPredicate) {
         var count = 0;
-        for (int i = 0; i < array.Count; i++) {
-            if (countPredicate(array[i]))
+        foreach (var it in array) {
+            if (countPredicate(it))
+                count++;
+        }
+        return count;
+    }
+
+    public static int Count<TArray, TItem>(this IList<TArray> array, TItem item, Func<TArray, TItem, bool> countPredicate) {
+        var count = 0;
+        foreach (var it in array) {
+            if (countPredicate(it, item))
                 count++;
         }
         return count;
     }
 
     public static bool All<T>(this IList<T> array, Func<T, bool> condition) {
-        for (int i = 0; i < array.Count; i++) {
-            if (!condition(array[i])) {
+        foreach (var it in array) {
+            if (!condition(it)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static bool All<TArray, TItem>(this IList<TArray> array, TItem item, Func<TArray, TItem, bool> comparator) {
+        foreach (var it in array) {
+            if (!comparator(it, item)) {
                 return false;
             }
         }
@@ -49,8 +102,17 @@ public static class ArrayExtensions {
     }
 
     public static bool Any<T>(this IList<T> array, Func<T, bool> condition) {
+        foreach (var it in array) {
+            if (condition(it)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public static bool Any<TArray, TItem>(this IList<TArray> array, TItem item, Func<TArray, TItem, bool> comparator) {
         for (int i = 0; i < array.Count; i++) {
-            if (condition(array[i])) {
+            if (comparator(array[i], item)) {
                 return true;
             }
         }
@@ -59,6 +121,14 @@ public static class ArrayExtensions {
 
     public static int Sum<T>(this IList<T> array, Func<T, int> sumFunction) {
         var sum = 0;
+        for (int i = 0; i < array.Count; i++) {
+            sum += sumFunction(array[i]);
+        }
+        return sum;
+    }
+
+    public static float Sum<T>(this IList<T> array, Func<T, float> sumFunction) {
+        var sum = 0f;
         for (int i = 0; i < array.Count; i++) {
             sum += sumFunction(array[i]);
         }
@@ -166,6 +236,30 @@ public static class ArrayExtensions {
         while (list.Contains(item)) {
             list.Remove(item);
             count++;
+        }
+        return count;
+    }
+    
+    public static int RemoveInactive(this List<GameObject> list) {
+        var count = 0;
+        for (int i = 0; i < list.Count; i++) {
+            if (!list[i] || !list[i].activeSelf) {
+                list.RemoveAt(i);
+                i--;
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public static int RemoveInactive<T>(this List<T> list) where T : MonoBehaviour {
+        var count = 0;
+        for (int i = 0; i < list.Count; i++) {
+            if (!list[i].isActiveAndEnabled) {
+                list.RemoveAt(i);
+                i--;
+                count++;
+            }
         }
         return count;
     }
