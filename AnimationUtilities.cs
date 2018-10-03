@@ -19,7 +19,7 @@ public class AnimationUtilities : MonoBehaviour {
     Animator animator;
     SpriteRenderer spriteRenderer;
 
-    void Start() {
+    void Awake() {
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }

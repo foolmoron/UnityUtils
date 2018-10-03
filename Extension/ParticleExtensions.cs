@@ -8,6 +8,11 @@ public static class ParticleExtensions {
         em.enabled = enabled;
     }
 
+    public static void setLoop(this ParticleSystem particles, bool loop) {
+        var m = particles.main;
+        m.loop = loop;
+    }
+
     public static void setColor(this ParticleSystem particles, Color color) {
         var m = particles.main;
         m.startColor = color;

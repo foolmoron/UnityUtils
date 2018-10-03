@@ -251,11 +251,35 @@ public static class ArrayExtensions {
         }
         return count;
     }
+    
+    public static int RemoveDead(this List<GameObject> list) {
+        var count = 0;
+        for (int i = 0; i < list.Count; i++) {
+            if (!list[i]) {
+                list.RemoveAt(i);
+                i--;
+                count++;
+            }
+        }
+        return count;
+    }
 
     public static int RemoveInactive<T>(this List<T> list) where T : MonoBehaviour {
         var count = 0;
         for (int i = 0; i < list.Count; i++) {
-            if (!list[i].isActiveAndEnabled) {
+            if (!list[i] || !list[i].isActiveAndEnabled) {
+                list.RemoveAt(i);
+                i--;
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public static int RemoveDead<T>(this List<T> list) where T : MonoBehaviour {
+        var count = 0;
+        for (int i = 0; i < list.Count; i++) {
+            if (!list[i]) {
                 list.RemoveAt(i);
                 i--;
                 count++;

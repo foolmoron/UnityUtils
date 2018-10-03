@@ -40,16 +40,20 @@ public class ObjectPool : MonoBehaviour {
 
     // using a Stack because it has convenient push/pop semantics, but internally it's still an array with nice performance
     // downside is that you can't access objects via index, but if that's really necessary then just change it to a List and add an extra count tracking variable
-    public Stack<GameObject> Objects { get; private set; }
+    Stack<GameObject> objects;
+
+    // all objects that came through this ObjectPool
+    public List<GameObject> AllObjects { get; private set; }
 
     void Start() {
-        if (Objects == null) {
+        if (objects == null) {
             Init();
         }
     }
 
     void Init() {
-        Objects = new Stack<GameObject>(InitialCount);
+        AllObjects = new List<GameObject>(InitialCount);
+        objects = new Stack<GameObject>(InitialCount);
         for (int i = 0; i < InitialCount; i++) {
             Release(Instantiate(Object));
         }
@@ -57,15 +61,15 @@ public class ObjectPool : MonoBehaviour {
 
     /// <summary>Obtains an object from the pool and sends the OnObtain message.</summary>
     public GameObject ObtainSimple(Vector3? position = null) {
-        if (Objects == null) {
+        if (objects == null) {
             Init();
         }
-        if (Objects.Count < 1) {
+        if (objects.Count < 1) {
             Debug.LogWarning("Had to instantiate pooled object at runtime! Raise the initial count of [" + Object.name + "].", gameObject);
             Release(Instantiate(Object));
         }
 
-        var obj = Objects.Pop();
+        var obj = objects.Pop();
         obj.transform.parent = KeepObjectsParented ? transform : null;
         if (position.HasValue) { // allow setting a position BEFORE activating object, so unintended collisions don't occur
             obj.transform.position = position.Value;
@@ -101,15 +105,17 @@ public class ObjectPool : MonoBehaviour {
 
     /// <summary>Releases an object into the pool and sends the OnRelease message.</summary>
     public void Release(GameObject obj) {
-        if (Objects == null) {
+        if (objects == null) {
             Init();
         }
-        if (Objects.Contains(obj)) {
+        if (objects.Contains(obj)) {
             return;
         }
+        AllObjects.AddOnce(obj);
+
         var pooledObj = obj.GetComponent<PooledObject>() ?? obj.AddComponent<PooledObject>();
         pooledObj.Source = this;
-        Objects.Push(obj);
+        objects.Push(obj);
         obj.transform.parent = transform;
         obj.SendMessage("OnRelease", SendMessageOptions.DontRequireReceiver);
         obj.SetActive(false); // SendMessage only works on active objects, so deactive after

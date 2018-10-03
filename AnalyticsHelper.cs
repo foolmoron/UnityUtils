@@ -32,13 +32,13 @@ public class AnalyticsHelper {
         if (param8Name != null) dict.Add(param8Name, param8);
         if (param9Name != null) dict.Add(param9Name, param9);
         dict.Add("version", Application.version);
-#if !UNITY_PS4
+#if !UNITY_PS4 && !DEBUG
         Analytics.CustomEvent(eventName, dict);
 #endif
     }
 
     public static void Event(string eventName, Vector3 position) {
-#if !UNITY_PS4
+#if !UNITY_PS4 && !DEBUG
         Analytics.CustomEvent(eventName, position);
 #endif
     }
