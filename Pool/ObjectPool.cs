@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 public static class ObjectPoolExtensions {
 
@@ -33,6 +35,9 @@ public static class ObjectPoolExtensions {
 
 public class ObjectPool : MonoBehaviour {
 
+    public event Action<GameObject> OnObtain = delegate { };
+    public event Action<GameObject> OnRelease = delegate { };
+
     public GameObject Object;
     [Range(0, 100)]
     public int InitialCount;
@@ -45,7 +50,7 @@ public class ObjectPool : MonoBehaviour {
     // all objects that came through this ObjectPool
     public List<GameObject> AllObjects { get; private set; }
 
-    void Start() {
+    void Awake() {
         if (objects == null) {
             Init();
         }
@@ -100,6 +105,9 @@ public class ObjectPool : MonoBehaviour {
     public T Obtain<T>(Vector3? position = null) where T : Component {
         var component = Obtain(position).GetComponent<T>();
         D.Assert(component != null, "Component '" + typeof(T).Name + "' does not exist on pooled object!");
+        if (component) {
+            OnObtain(component.gameObject);
+        }
         return component;
     }
 
@@ -119,5 +127,6 @@ public class ObjectPool : MonoBehaviour {
         obj.transform.parent = transform;
         obj.SendMessage("OnRelease", SendMessageOptions.DontRequireReceiver);
         obj.SetActive(false); // SendMessage only works on active objects, so deactive after
+        OnRelease(obj);
     }
 }

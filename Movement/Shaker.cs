@@ -6,6 +6,7 @@ public class Shaker : MonoBehaviour {
     public bool Shaking = false;
     [Range(0, 1)]
     public float Strength = 0.05f;
+	public float StrengthMultiple = 1;
     [Range(1, 10)]
     public int FrameInterval = 1;
 
@@ -39,7 +40,7 @@ public class Shaker : MonoBehaviour {
 
     void Shake() {
         transform.localPosition -= previousShake;
-        Vector3 shake = Random.insideUnitCircle.normalized * Strength;
+        Vector3 shake = Random.insideUnitCircle.normalized * Strength * StrengthMultiple;
         transform.localPosition += shake;
         previousShake = shake;
     }

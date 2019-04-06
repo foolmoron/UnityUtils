@@ -8,6 +8,8 @@ public class UnityEventInt : UnityEvent<int> { }
 [Serializable]
 public class UnityEventFloat : UnityEvent<float> { }
 [Serializable]
+public class UnityEventBool : UnityEvent<bool> { }
+[Serializable]
 public class UnityEventString : UnityEvent<string> { }
 [Serializable]
 public class UnityEventVector2 : UnityEvent<Vector2> { }

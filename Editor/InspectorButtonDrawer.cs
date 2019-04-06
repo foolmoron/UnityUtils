@@ -10,7 +10,7 @@ public class InspectorButtonDrawer : PropertyDrawer {
 
     public override void OnGUI(Rect position, SerializedProperty prop, GUIContent label) {
         var inspectorButtonAttribute = (InspectorButtonAttribute) attribute;
-        var isPrefab = PrefabUtility.GetPrefabParent(prop.serializedObject.targetObject) == null && PrefabUtility.GetPrefabObject(prop.serializedObject.targetObject) != null;
+        var isPrefab = PrefabUtility.GetCorrespondingObjectFromSource(prop.serializedObject.targetObject) == null && PrefabUtility.GetPrefabObject(prop.serializedObject.targetObject) != null;
         label.text = (isPrefab ? "PREFAB - " : "") + label.text;
         var width = Mathf.Min(position.width, GUI.skin.button.CalcSize(label).x + 12);
         var buttonRect = new Rect(

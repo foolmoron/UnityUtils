@@ -13,7 +13,7 @@ public class ListDict<TKey, TValue> {
         Values = new List<TValue>(capacity);
     }
 
-    public void Add(TKey key, TValue value) {
+    public void Add(TKey key, TValue value = default(TValue)) {
         var index = Keys.IndexOf(key);
         if (index < 0) {
             Keys.Add(key);

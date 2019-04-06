@@ -20,7 +20,7 @@ class LogRangeDrawer : PropertyDrawer {
         var logRangeAttribute = (LogRangeAttribute) attribute;
         EditorGUI.BeginProperty(position, label, property);
         if (property.propertyType == SerializedPropertyType.Float) {
-            // TODO: handle a bunch of edge cases
+            // TODO(momin): handle a bunch of edge cases
             sliderValue = EditorGUI.Slider(new Rect(position.x, position.y, position.width, position.height / 2), label, sliderValue, logRangeAttribute.Min, logRangeAttribute.Max);
             textValue = LogInterp(logRangeAttribute.Min, logRangeAttribute.Max, sliderValue / (logRangeAttribute.Max - logRangeAttribute.Min));
             EditorGUI.LabelField(new Rect(position.x + position.width - TEXT_FIELD_WIDTH - 20, position.y + position.height / 2, TEXT_FIELD_WIDTH, position.height / 2), "eˣ");
